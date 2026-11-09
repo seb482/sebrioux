@@ -1,6 +1,6 @@
 // Service worker : l'application fonctionne hors ligne après le premier chargement.
 // Incrémenter la version à chaque mise à jour majeure des fichiers de l'application.
-const VERSION = 'passeport-basques-v3';
+const VERSION = 'passeport-basques-v4';
 const COQUILLE = [
   './',
   './index.html',
@@ -13,6 +13,7 @@ const COQUILLE = [
   './icon-512.png',
   './apple-touch-icon.png',
   './data/contenu.json',
+  './assets/couverture.jpg',
 ];
 
 self.addEventListener('install', (e) => {

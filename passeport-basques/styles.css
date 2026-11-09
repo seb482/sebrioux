@@ -53,11 +53,14 @@ body {
 }
 .entete::before { top: 9px; }
 .entete::after { bottom: 14px; }
-.emblème {
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 4px;
+.couverture-image {
   display: block;
+  width: min(200px, 60%);
+  height: auto;
+  margin: 0 auto 10px;
+  border: 2px solid var(--or);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 .kicker {
   margin: 0;

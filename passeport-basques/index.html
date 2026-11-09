@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1d3557">
-  <meta name="description" content="Passeport virtuel de la MRC des Basques : scannez les codes QR des attraits, accumulez des pistoles et débloquez des récompenses.">
-  <title>Passeport virtuel – MRC des Basques</title>
+  <meta name="description" content="Scannez les codes QR des attraits de la MRC des Basques et gardez la trace de vos visites.">
+  <title>Passeport virtuel des Basques</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -13,6 +13,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Passeport">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Courier+Prime:wght@400;700&family=EB+Garamond:wght@500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -36,12 +39,12 @@
   </nav>
 
   <section id="installation" class="installation" hidden aria-label="Installer l’application">
-    <p><strong>Gardez le passeport sur votre téléphone.</strong> Installez-le pour le retrouver sur votre écran d’accueil, même hors ligne.</p>
+    <p><strong>Ajoutez-le à votre téléphone.</strong> Vous le retrouverez sur votre écran d’accueil, même sans réseau.</p>
     <div class="actions">
       <button id="btn-installer" hidden>Installer</button>
       <button id="btn-plus-tard" class="discret">Plus tard</button>
     </div>
-    <p id="aide-ios" class="petit" hidden>Sur iPhone : touchez <strong>Partager</strong> (le carré avec la flèche), puis <strong>Sur l’écran d’accueil</strong>.</p>
+    <p id="aide-ios" class="petit" hidden>Sur iPhone, appuyez sur <strong>Partager</strong>, puis sur <strong>Sur l’écran d’accueil</strong>.</p>
   </section>
 
   <main id="contenu" class="contenu" aria-live="polite"></main>

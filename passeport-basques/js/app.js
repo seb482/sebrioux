@@ -62,7 +62,7 @@ function rendu() {
   arreterScanner();
   document.getElementById('titre').textContent = state.settings.titre;
   document.getElementById('mrc').textContent = state.settings.mrc;
-  document.title = `${state.settings.titre} – ${state.settings.mrc}`;
+  document.title = `${state.settings.titre}, ${state.settings.mrc}`;
   document.querySelectorAll('[data-vue]').forEach((b) => {
     b.setAttribute('aria-current', String(b.dataset.vue === vue));
   });
@@ -98,9 +98,9 @@ function vuePasseport() {
     </section>
     <p class="prochaine">${
       prochaine
-        ? `Prochain avantage : <strong>${esc(prochaine.titre)}</strong> à ${prochaine.seuil} ${esc(monnaie())}
+        ? `<strong>${esc(prochaine.titre)}</strong>, à ${prochaine.seuil} ${esc(monnaie())}
            <span class="barre"><span style="width:${Math.round(prochaine.progres * 100)}%"></span></span>`
-        : 'Tous les avantages sont débloqués !'
+        : 'Vous avez débloqué tous les avantages.'
     }</p>
     <form data-form="nom-joueur" class="ligne nom">
       <label class="sr" for="nom-joueur">Nom du titulaire</label>
@@ -130,7 +130,7 @@ function carteAttrait(a) {
          <span class="tampon-date">${esc(dateCourte(et.date))}</span>
          <span class="tampon-bas">MRC des Basques</span>
        </div>`
-    : `<div class="case-vide">${a.actif ? 'Scannez le code QR sur place' : 'Non disponible pour le moment'}</div>`;
+    : `<div class="case-vide">${a.actif ? 'Scannez le code QR sur place' : 'Pas disponible pour l’instant'}</div>`;
   return `
     <article class="${classes}">
       <header class="visa-entete"><span class="visa-num">${esc(String(a.ordre).padStart(2, '0'))}</span><h2>${esc(a.nom)}</h2></header>
@@ -148,12 +148,12 @@ function vueScanner() {
   return `
     <section class="scan">
       <h2>Scanner un code QR</h2>
-      <p>Repérez le code QR installé sur place (panneau, kiosque, quai…) et pointez-le vers la caméra.</p>
+      <p>Trouvez le code sur place, sur un panneau ou un kiosque, puis pointez la caméra dessus.</p>
       ${camera ? '<div class="cadre"><video id="scan-video" playsinline muted></video></div>' : ''}
       <p id="scan-statut" class="statut">${
         camera
-          ? 'Démarrage de la caméra…'
-          : 'La lecture par caméra n’est pas disponible dans ce navigateur. Sur iPhone, utilisez l’appareil photo natif : le code ouvre directement le passeport. Sinon, saisissez le code ci-dessous.'
+          ? 'La caméra démarre…'
+          : 'Ce navigateur ne peut pas lire la caméra. Sur iPhone, ouvrez l’appareil photo : le code ouvre le passeport directement. Sinon, tapez le code ci-dessous.'
       }</p>
       <form data-form="scan-manuel" class="ligne">
         <label class="sr" for="code-manuel">Code de l’attrait</label>
@@ -181,7 +181,7 @@ function vueRecompenses() {
           <div class="barre"><span style="width:${Math.round(r.progres * 100)}%"></span></div>
           ${
             r.reclamee
-              ? '<p class="ok">✓ Réclamée</p>'
+              ? '<p class="ok">Réclamé</p>'
               : r.debloquee
                 ? `<button data-action="reclamer" data-id="${esc(r.id)}">Réclamer</button>`
                 : `<p class="a-faire">Encore ${Math.max(0, r.seuil - total)} ${esc(monnaie())}.</p>`
@@ -205,7 +205,7 @@ function vueAdmin() {
           <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="off" required>
           <button>Déverrouiller</button>
         </form>
-        <p class="petit">Le NIP est conservé sur cet appareil : ce n’est pas une protection forte.</p>
+        <p class="petit">Le NIP reste sur cet appareil. Ce n’est pas une vraie protection, seulement une barrière contre les erreurs.</p>
       </section>`;
   }
   const onglets = [
@@ -221,10 +221,10 @@ function vueAdmin() {
     parametres: adminParametres,
   }[onglet]();
   return `
-    <p class="banniere info">Contenu publié : <strong>${esc(state.misAJour || 'non daté')}</strong>.
-      Les modifications faites ici restent sur cet appareil. Pour les publier auprès des visiteurs,
-      utilisez <strong>Exporter le contenu</strong>, remplacez <code>data/contenu.json</code> dans le dépôt,
-      puis faites un commit et un push.</p>
+    <p class="banniere info">Version publiée : <strong>${esc(state.misAJour || 'non datée')}</strong>.
+      Les modifications faites ici restent sur cet appareil. Pour que les visiteurs les voient,
+      exportez le contenu avec <strong>Exporter le contenu</strong>, remplacez <code>data/contenu.json</code> dans le dépôt,
+      puis publiez le changement.</p>
     <nav class="sous-onglets" aria-label="Sections de l’administration">
       ${onglets
         .map(([k, l]) => `<button data-action="onglet" data-onglet="${k}" aria-pressed="${onglet === k}">${l}</button>`)
@@ -251,8 +251,8 @@ function adminAttraits() {
           <div>
             <strong>${esc(a.nom)}</strong>
             <span class="petit">${esc(a.categorie || '')}</span><br>
-            <span class="petit">Code : <code>${esc(a.codeQR)}</code> · ${a.actif ? 'Actif' : 'Inactif'}
-            · ${state.joueur.etampes[a.id] ? 'étampé' : 'non étampé'}</span>
+            <span class="petit">Code <code>${esc(a.codeQR)}</code>, ${a.actif ? 'actif' : 'inactif'},
+            ${state.joueur.etampes[a.id] ? 'étampé' : 'non étampé'}</span>
           </div>
           <div class="actions">
             <button data-action="edit-attrait" data-id="${esc(a.id)}">Modifier</button>
@@ -356,9 +356,9 @@ function adminRecompenses() {
           return `
           <article class="carte admin-item">
             <div>
-              <strong>${esc(r.titre)}</strong> — ${r.seuil} ${esc(monnaie())}<br>
+              <strong>${esc(r.titre)}</strong>, ${r.seuil} ${esc(monnaie())}<br>
               <span class="petit">${esc(r.description || '')}</span><br>
-              <span class="petit">${date ? `Réclamée le ${esc(fmt(date))}` : 'Non réclamée'}</span>
+              <span class="petit">${date ? `Réclamé le ${esc(fmt(date))}` : 'Pas encore réclamé'}</span>
             </div>
             <div class="actions">
               <button data-action="edit-reco" data-id="${esc(r.id)}">Modifier</button>
@@ -675,9 +675,9 @@ async function demarrerScanner() {
         /* image pas encore prête : on réessaie */
       }
     }, 350);
-    if (statut) statut.textContent = 'Pointez la caméra vers le code QR…';
+    if (statut) statut.textContent = 'Pointez la caméra vers le code…';
   } catch {
-    if (statut) statut.textContent = 'Caméra inaccessible (autorisation refusée ?). Utilisez la saisie manuelle.';
+    if (statut) statut.textContent = 'La caméra est inaccessible. Vérifiez l’autorisation, ou tapez le code.';
   }
 }
 
@@ -715,7 +715,7 @@ function ouvrirQR(id) {
     });
   } else {
     document.getElementById('qr-image').innerHTML =
-      '<p class="erreur">Générateur de QR indisponible (connexion requise au premier chargement).</p>';
+      '<p class="erreur">Le générateur de QR n’a pas pu se charger. Vérifiez la connexion et réessayez.</p>';
   }
   document.getElementById('modal').hidden = false;
 }

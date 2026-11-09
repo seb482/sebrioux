@@ -16,12 +16,14 @@
 }
 
 * { box-sizing: border-box; }
+h1, h2, h3 { font-family: "EB Garamond", Georgia, serif; font-weight: 600; }
+.tampon { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; }
 [hidden] { display: none !important; }
 
 body {
   margin: 0;
   color: var(--encre);
-  font: 16px/1.5 Georgia, "Times New Roman", serif;
+  font: 17px/1.55 "Source Serif 4", Georgia, serif;
   background-color: var(--papier);
   background-image:
     repeating-radial-gradient(circle at 50% 50%, rgba(139, 107, 42, 0.035) 0 2px, transparent 2px 9px),
@@ -162,7 +164,7 @@ h3 {
   overflow: hidden;
 }
 .page-identite::before {
-  content: "PASSEPORT VIRTUEL · MRC DES BASQUES";
+  content: "MRC des Basques";
   display: block;
   text-align: center;
   font-size: 0.7rem;
@@ -183,14 +185,14 @@ h3 {
 }
 .champ strong {
   font-size: 1.05rem;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Courier Prime", "Courier New", monospace;
   font-weight: 700;
   color: var(--encre);
   overflow-wrap: anywhere;
 }
 .mrz {
   margin: 16px 0 0;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Courier Prime", "Courier New", monospace;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   line-height: 1.35;
@@ -260,7 +262,7 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 .visa.inactif { opacity: 0.55; }
 .visa-entete { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--filet); padding-bottom: 6px; }
 .visa-num {
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Courier Prime", "Courier New", monospace;
   font-size: 0.8rem;
   color: var(--gris);
   border: 1px solid var(--filet);
@@ -317,7 +319,7 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 }
 .tampon-haut, .tampon-bas { font-size: 0.6rem; letter-spacing: 0.2em; }
 .tampon-centre { font-size: 1rem; line-height: 1.15; margin: 4px 0; max-width: 118px; }
-.tampon-date { font-family: "Courier New", Courier, monospace; font-size: 0.82rem; border-top: 1px solid var(--tampon); border-bottom: 1px solid var(--tampon); padding: 1px 6px; }
+.tampon-date { font-family: "Courier Prime", "Courier New", monospace; font-size: 0.82rem; border-top: 1px solid var(--tampon); border-bottom: 1px solid var(--tampon); padding: 1px 6px; }
 .tampon-bas { margin-top: 4px; }
 
 .visa.nouvelle .tampon { animation: frapper 0.55s cubic-bezier(.2, 1.5, .4, 1) both; }
@@ -359,7 +361,7 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 .coupon.reclamee { opacity: 0.7; }
 .coupon h3 { border: none; margin: 0; padding: 0; font-size: 1.02rem; letter-spacing: 0.04em; text-transform: none; color: var(--encre); }
 .coupon .desc { margin: 0; }
-.seuil { font-family: "Courier New", Courier, monospace; font-weight: 700; color: var(--couverture-2); margin: 4px 0 0; }
+.seuil { font-family: "Courier Prime", "Courier New", monospace; font-weight: 700; color: var(--couverture-2); margin: 4px 0 0; }
 .coupon button { margin-top: 8px; justify-self: start; }
 .coupon::after {
   content: "";
@@ -378,7 +380,7 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 .admin-item { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; background: #fbf6e6; border: 1px solid var(--filet); border-radius: 4px; padding: 12px 14px; }
 .actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .actions button { padding: 5px 11px; font-size: 0.85rem; }
-code { background: var(--papier-2); padding: 1px 6px; border-radius: 3px; font-size: 0.9em; font-family: "Courier New", Courier, monospace; }
+code { background: var(--papier-2); padding: 1px 6px; border-radius: 3px; font-size: 0.9em; font-family: "Courier Prime", "Courier New", monospace; }
 .liste-cases { display: grid; gap: 8px; margin-top: 8px; }
 .ajustements { padding-left: 0; list-style: none; display: grid; gap: 8px; }
 .ajustements li { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }

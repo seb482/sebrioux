@@ -48,7 +48,7 @@ export function defaultState() {
     settings: {
       titre: 'Passeport virtuel',
       mrc: 'MRC des Basques',
-      sousTitre: 'Visitez les attraits de la MRC et accumulez des pistoles.',
+      sousTitre: 'Faites le tour des attraits de la MRC et ramassez des pistoles au passage.',
       monnaie: 'pistoles',
       pistolesParEtampe: 10,
       pinAdmin: '1234',
@@ -56,11 +56,11 @@ export function defaultState() {
     attraits: [
       {
         id: 'traverse-trois-pistoles',
-        nom: 'La traverse Trois-Pistoles – Les Escoumins',
+        nom: 'Traverse Trois-Pistoles/Les Escoumins',
         categorie: 'Traversier',
         lieu: 'Quai de Trois-Pistoles',
         description:
-          'Traversée du Saint-Laurent entre Trois-Pistoles et Les Escoumins (environ 1 h 30), exploitée par la Compagnie de navigation des Basques. Service saisonnier, de mi-mai à mi-octobre ; horaires selon les marées.',
+          'Environ 1 h 30 de traversée du Saint-Laurent entre Trois-Pistoles et Les Escoumins. La Compagnie de navigation des Basques l’exploite de mi-mai à mi-octobre. Les horaires dépendent des marées.',
         codeQR: 'TRAVERSE-01',
         actif: true,
         ordre: 1,
@@ -71,7 +71,7 @@ export function defaultState() {
         categorie: 'Patrimoine et nature',
         lieu: 'Au large de Trois-Pistoles',
         description:
-          "Petite île à environ 5 km de Trois-Pistoles où des baleiniers basques découpaient autrefois les baleines. Des vestiges de fours à huile de baleine y ont été repérés.",
+          "Une petite île à 5 km de Trois-Pistoles. Des baleiniers basques y dépeçaient autrefois les baleines, et on y a retrouvé des restes de fours à huile.",
         codeQR: 'ILES-02',
         actif: true,
         ordre: 2,
@@ -81,16 +81,16 @@ export function defaultState() {
         nom: 'Église de Trois-Pistoles',
         categorie: 'Patrimoine religieux',
         lieu: 'Trois-Pistoles',
-        description: 'Un des lieux de culte patrimoniaux de Trois-Pistoles. Texte à compléter.',
+        description: 'Une église patrimoniale de Trois-Pistoles.',
         codeQR: 'EGLISE-03',
         actif: true,
         ordre: 3,
       },
     ],
     recompenses: [
-      { id: 'rec-cafe', titre: 'Un café offert', seuil: 10, description: 'Chez un commerçant partenaire (à confirmer).' },
-      { id: 'rec-bon', titre: 'Bon d’achat de 10 $', seuil: 25, description: 'Exemple : à remplacer par une offre réelle.' },
-      { id: 'rec-souvenir', titre: 'Article souvenir', seuil: 50, description: 'Exemple : à remplacer par une offre réelle.' },
+      { id: 'rec-cafe', titre: 'Un café offert', seuil: 10, description: '' },
+      { id: 'rec-bon', titre: 'Bon d’achat de 10 $', seuil: 25, description: '' },
+      { id: 'rec-souvenir', titre: 'Article souvenir', seuil: 50, description: '' },
     ],
     joueur: { nom: '', numero: genNumero(), etampes: {}, ajustements: [], reclamees: {} },
   };
@@ -336,8 +336,8 @@ export function sauverParametres(state, p = {}) {
   const liste = [];
   const pistoles = Math.round(Number(p.pistolesParEtampe));
   const pin = String(p.pinAdmin ?? '').trim();
-  if (!Number.isFinite(pistoles) || pistoles < 0) liste.push('Pistoles par étampe : entier positif ou nul.');
-  if (pin.length < 4) liste.push('Le NIP administrateur doit contenir au moins 4 caractères.');
+  if (!Number.isFinite(pistoles) || pistoles < 0) liste.push('Les pistoles par étampe doivent être un nombre entier, zéro ou plus.');
+  if (pin.length < 4) liste.push('Le NIP doit compter au moins 4 caractères.');
   if (liste.length) return { ...erreurs(liste), state };
 
   const texte = (v, defaut = '') => String(v ?? '').trim().slice(0, 200) || defaut;

@@ -1,6 +1,6 @@
 // Service worker : l'application fonctionne hors ligne après le premier chargement.
 // Incrémenter la version à chaque mise à jour majeure des fichiers de l'application.
-const VERSION = 'passeport-basques-v4';
+const VERSION = 'passeport-basques-v5';
 const COQUILLE = [
   './',
   './index.html',

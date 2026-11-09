@@ -198,6 +198,10 @@ function vueAdmin() {
     parametres: adminParametres,
   }[onglet]();
   return `
+    <p class="banniere info">Contenu publié : <strong>${esc(state.misAJour || 'non daté')}</strong>.
+      Les modifications faites ici restent sur cet appareil. Pour les publier auprès des visiteurs,
+      utilisez <strong>Exporter le contenu</strong>, remplacez <code>data/contenu.json</code> dans le dépôt,
+      puis faites un commit et un push.</p>
     <nav class="sous-onglets" aria-label="Sections de l’administration">
       ${onglets
         .map(([k, l]) => `<button data-action="onglet" data-onglet="${k}" aria-pressed="${onglet === k}">${l}</button>`)
@@ -374,11 +378,21 @@ function adminParametres() {
     </form>
     <h3>Données</h3>
     <div class="actions">
-      <button data-action="exporter">Exporter (JSON)</button>
+      <button data-action="exporter-contenu">Exporter le contenu (data/contenu.json)</button>
+      <button data-action="exporter">Sauvegarde complète (JSON)</button>
       <label class="bouton">Importer (JSON)<input id="import-fichier" type="file" accept="application/json,.json" hidden></label>
       <button data-action="reset-tout" class="danger">Tout réinitialiser</button>
     </div>
     <p class="petit">Les données sont conservées sur cet appareil. Exportez une sauvegarde régulièrement.</p>`;
+}
+
+function telecharger(objet, nom) {
+  const blob = new Blob([JSON.stringify(objet, null, 2) + '\n'], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nom;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 // ---------- Actions ----------
@@ -474,12 +488,10 @@ const ACTIONS = {
     appliquer(core.annulerReclamation(state, el.dataset.id), 'Réclamation annulée.');
   },
   exporter() {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `passeport-basques-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    telecharger(state, `passeport-basques-${new Date().toISOString().slice(0, 10)}.json`);
+  },
+  'exporter-contenu'() {
+    telecharger(core.contenuPourExport(state), 'contenu.json');
   },
   'reset-tout'() {
     if (!confirm('Effacer TOUTES les données (attraits, récompenses, passeport, paramètres) ?')) return;
@@ -744,10 +756,28 @@ majInstallation();
 
 // ---------- Démarrage ----------
 
-const codeInitial = new URLSearchParams(location.search).get('e');
-if (codeInitial) {
-  history.replaceState(null, '', location.pathname);
-  traiterCode(codeInitial);
-} else {
-  rendu();
+async function chargerContenu() {
+  try {
+    const r = await fetch('data/contenu.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const res = core.fusionnerContenu(state, await r.json());
+    if (res.ok) {
+      state = res.state;
+      sauver();
+    } else {
+      console.warn('Contenu publié invalide :', res.erreur || res.erreurs);
+    }
+  } catch (e) {
+    console.info('Contenu publié indisponible, copie locale utilisée.', e);
+  }
 }
+
+const codeInitial = new URLSearchParams(location.search).get('e');
+chargerContenu().then(() => {
+  if (codeInitial) {
+    history.replaceState(null, '', location.pathname);
+    traiterCode(codeInitial);
+  } else {
+    rendu();
+  }
+});

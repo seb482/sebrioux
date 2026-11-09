@@ -162,3 +162,37 @@ test('reinitialiserPasseport vide le passeport mais garde les attraits', () => {
   assert.equal(r.joueur.nom, '');
   assert.equal(r.attraits.length, 3);
 });
+
+test('fusionnerContenu remplace attraits et récompenses mais garde le passeport local', () => {
+  let s = core.estampiller(base(), 'TRAVERSE-01').state;
+  s.settings.pinAdmin = '5555';
+  const contenu = {
+    misAJour: '2026-12-01',
+    settings: { titre: 'Nouveau titre', pistolesParEtampe: 20 },
+    attraits: [{ id: 'nouveau', nom: 'Nouvel attrait', codeQR: 'NOUV-01', actif: true }],
+    recompenses: [{ id: 'r', titre: 'R', seuil: 5 }],
+  };
+  const r = core.fusionnerContenu(s, contenu);
+  assert.equal(r.ok, true);
+  assert.equal(r.state.attraits.length, 1);
+  assert.equal(r.state.settings.titre, 'Nouveau titre');
+  assert.equal(r.state.settings.pinAdmin, '5555');
+  assert.equal(r.state.misAJour, '2026-12-01');
+  // l'étampe locale référence un attrait disparu : elle ne compte plus
+  assert.equal(core.totalPistoles(r.state), 0);
+});
+
+test('fusionnerContenu refuse un contenu invalide sans toucher à l’état', () => {
+  const s = base();
+  assert.equal(core.fusionnerContenu(s, { attraits: 'pas une liste' }).ok, false);
+});
+
+test('contenuPourExport ne contient ni NIP ni passeport', () => {
+  const s = core.estampiller(base(), 'TRAVERSE-01').state;
+  const c = core.contenuPourExport(s);
+  assert.equal(c.settings.pinAdmin, undefined);
+  assert.equal(c.joueur, undefined);
+  assert.equal(c.attraits.length, 3);
+  // le contenu exporté est lisible par fusionnerContenu
+  assert.equal(core.fusionnerContenu(base(), JSON.parse(JSON.stringify(c))).ok, true);
+});

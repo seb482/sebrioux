@@ -52,6 +52,16 @@ Onglet **Admin**, NIP par défaut `1234` (à changer dans **Paramètres**).
 - **Récompenses** : ajouter, modifier, supprimer ; annuler une réclamation.
 - **Paramètres** : titre, territoire, nom de la monnaie, pistoles par étampe, NIP. Export et import JSON, réinitialisation.
 
+## Publier une modification du contenu
+
+Les attraits, les QR, les récompenses et le titre viennent du fichier `data/contenu.json`, lu à chaque ouverture de l'application.
+
+1. Dans le mode admin, faites vos modifications, puis cliquez sur **Exporter le contenu (data/contenu.json)**.
+2. Remplacez `data/contenu.json` dans le dépôt par le fichier téléchargé.
+3. Faites un commit et un push. Les visiteurs reçoivent le nouveau contenu à leur prochaine ouverture (en ligne).
+
+Les modifications faites dans l'admin restent sur l'appareil où elles sont faites : elles sont remplacées par le fichier publié au prochain chargement si elles n'ont pas été exportées. Le NIP administrateur et le passeport d'un visiteur ne font jamais partie du fichier.
+
 ## Données et stockage
 
 Les données sont dans le `localStorage` du navigateur (clé `passeport-basques:v1`), sur l'appareil. Elles ne sont **pas partagées** entre appareils et ne sont pas sauvegardées dans le nuage. Utilisez *Exporter (JSON)* pour une sauvegarde.

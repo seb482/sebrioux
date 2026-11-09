@@ -345,3 +345,37 @@ export function sauverParametres(state, p = {}) {
   };
   return { ok: true, state: next };
 }
+
+// Contenu publié (data/contenu.json) : attraits, récompenses et paramètres visibles des visiteurs.
+// Le NIP administrateur et le passeport du joueur restent locaux à l'appareil.
+export function fusionnerContenu(state, contenu) {
+  const s = contenu?.settings || {};
+  const candidat = {
+    settings: {
+      ...state.settings,
+      titre: s.titre ?? state.settings.titre,
+      sousTitre: s.sousTitre ?? state.settings.sousTitre,
+      mrc: s.mrc ?? state.settings.mrc,
+      monnaie: s.monnaie ?? state.settings.monnaie,
+      pistolesParEtampe: s.pistolesParEtampe ?? state.settings.pistolesParEtampe,
+    },
+    attraits: contenu?.attraits,
+    recompenses: contenu?.recompenses,
+    joueur: state.joueur,
+  };
+  const v = valider(candidat);
+  if (!v.ok) return v;
+  const next = normaliser(candidat);
+  next.misAJour = contenu.misAJour || null;
+  return { ok: true, state: next };
+}
+
+export function contenuPourExport(state) {
+  const { titre, sousTitre, mrc, monnaie, pistolesParEtampe } = state.settings;
+  return {
+    misAJour: new Date().toISOString().slice(0, 10),
+    settings: { titre, sousTitre, mrc, monnaie, pistolesParEtampe },
+    attraits: state.attraits,
+    recompenses: state.recompenses,
+  };
+}

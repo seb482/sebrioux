@@ -1,0 +1,9 @@
+{
+  "name": "passeport-basques",
+  "private": true,
+  "type": "module",
+  "description": "Passeport virtuel de la MRC des Basques",
+  "scripts": {
+    "test": "node --test tests/core.test.mjs"
+  }
+}

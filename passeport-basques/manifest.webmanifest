@@ -1,0 +1,14 @@
+{
+  "name": "Passeport virtuel – MRC des Basques",
+  "short_name": "Passeport",
+  "description": "Scannez les codes QR des attraits de la MRC des Basques et accumulez des pistoles.",
+  "lang": "fr-CA",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f1e3",
+  "theme_color": "#1d3557",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

@@ -20,9 +20,14 @@
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <filter id="encre" x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="bruit"/>
-      <feDisplacementMap in="SourceGraphic" in2="bruit" scale="2.5"/>
+    <filter id="encre" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="4" result="grain"/>
+      <feDisplacementMap in="SourceGraphic" in2="grain" scale="5" xChannelSelector="R" yChannelSelector="G" result="bord"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="11" result="usure"/>
+      <feColorMatrix in="usure" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 2.5" result="zones"/>
+      <feComposite in="bord" in2="zones" operator="in" result="encre"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -5 0 0 0 3.6" result="poussiere"/>
+      <feComposite in="encre" in2="poussiere" operator="in"/>
     </filter>
   </svg>
   <header class="entete">

@@ -87,3 +87,18 @@ Les tests couvrent la logique métier (`js/core.js`) : étampes, pistoles, seuil
 - Un petit backend partagé (par exemple une base de données hébergée) pour que plusieurs visiteurs aient leur propre passeport et que l'administration soit protégée côté serveur.
 - Un QR par attrait imprimé sur un support durable, avec un contrôle des codes reçus.
 - Un service worker versionné : incrémenter `VERSION` dans `sw.js` à chaque mise à jour des fichiers.
+
+## Réunir les fiches dans Excel
+
+`outils/fiches_vers_excel.py` lit une ou plusieurs sauvegardes complètes (JSON, exportées depuis le mode administrateur) et produit un classeur `.xlsx` :
+
+- **Fiches** : une ligne par visiteur (identité, courriel, réponse à l'infolettre, étampes, pistoles, avantages réclamés) ;
+- **Infolettre** : seulement les visiteurs qui ont dit oui, avec leur courriel ;
+- **Attraits** : nombre de visiteurs qui ont étampé chaque attrait.
+
+```bash
+pip install openpyxl
+python3 outils/fiches_vers_excel.py sauvegarde1.json sauvegarde2.json -o fiches.xlsx
+```
+
+Un même numéro de passeport n'apparaît qu'une fois. Si deux sauvegardes le contiennent, la version avec le plus d'étampes est gardée.

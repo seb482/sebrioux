@@ -16,7 +16,18 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="encre" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="bruit"/>
+      <feDisplacementMap in="SourceGraphic" in2="bruit" scale="2.5"/>
+    </filter>
+  </svg>
   <header class="entete">
+    <svg class="emblème" viewBox="0 0 512 512" aria-hidden="true">
+      <circle cx="256" cy="256" r="236" fill="none" stroke="#c9a227" stroke-width="10"/>
+      <circle cx="256" cy="256" r="200" fill="none" stroke="#c9a227" stroke-width="3" stroke-dasharray="4 12"/>
+      <path d="M256 120 L280 214 L378 214 L299 272 L328 368 L256 316 L184 368 L213 272 L134 214 L232 214 Z" fill="#c9a227"/>
+    </svg>
     <p class="kicker" id="mrc">MRC des Basques</p>
     <h1 id="titre">Passeport virtuel</h1>
   </header>

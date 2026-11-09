@@ -196,3 +196,11 @@ test('contenuPourExport ne contient ni NIP ni passeport', () => {
   // le contenu exporté est lisible par fusionnerContenu
   assert.equal(core.fusionnerContenu(base(), JSON.parse(JSON.stringify(c))).ok, true);
 });
+
+test('chaque passeport a un numéro de 9 chiffres conservé à la normalisation', () => {
+  assert.match(base().joueur.numero, /^\d{9}$/);
+  const brut = { settings: {}, attraits: [], recompenses: [], joueur: { numero: '123456789' } };
+  assert.equal(core.normaliser(brut).joueur.numero, '123456789');
+  const sans = core.normaliser({ settings: {}, attraits: [], recompenses: [], joueur: {} });
+  assert.match(sans.joueur.numero, /^\d{9}$/);
+});

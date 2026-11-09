@@ -22,6 +22,13 @@ export function genCode(longueur = 8, rand = Math.random) {
   return s;
 }
 
+// Numéro de passeport : 9 chiffres, attribué une fois par passeport.
+export function genNumero(rand = Math.random) {
+  let s = '';
+  for (let i = 0; i < 9; i++) s += Math.floor(rand() * 10);
+  return s;
+}
+
 export function normCode(valeur) {
   return String(valeur ?? '').trim().toUpperCase();
 }
@@ -85,7 +92,7 @@ export function defaultState() {
       { id: 'rec-bon', titre: 'Bon d’achat de 10 $', seuil: 25, description: 'Exemple : à remplacer par une offre réelle.' },
       { id: 'rec-souvenir', titre: 'Article souvenir', seuil: 50, description: 'Exemple : à remplacer par une offre réelle.' },
     ],
-    joueur: { nom: '', etampes: {}, ajustements: [], reclamees: {} },
+    joueur: { nom: '', numero: genNumero(), etampes: {}, ajustements: [], reclamees: {} },
   };
 }
 
@@ -107,6 +114,7 @@ export function normaliser(obj) {
     recompenses: obj.recompenses.map((r) => ({ description: '', ...r })),
     joueur: {
       nom: '',
+      numero: genNumero(),
       etampes: {},
       ajustements: [],
       reclamees: {},
@@ -214,7 +222,7 @@ export function supprimerAjustement(state, id) {
 
 export function reinitialiserPasseport(state) {
   const next = clone(state);
-  next.joueur = { nom: '', etampes: {}, ajustements: [], reclamees: {} };
+  next.joueur = { nom: '', numero: genNumero(), etampes: {}, ajustements: [], reclamees: {} };
   return { ok: true, state: next };
 }
 

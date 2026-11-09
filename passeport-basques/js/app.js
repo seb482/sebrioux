@@ -78,47 +78,70 @@ function vuePasseport() {
   const total = core.totalPistoles(state);
   const etampes = core.nbEtampes(state);
   const prochaine = core.statutRecompenses(state).find((r) => !r.debloquee);
-  const cartes = state.attraits
+  const dates = Object.values(state.joueur.etampes).map((e) => e.date).sort();
+  const premiere = dates[0] ? fmt(dates[0]) : '—';
+  const visas = [...state.attraits]
     .filter((a) => a.actif || state.joueur.etampes[a.id])
+    .sort((x, y) => x.ordre - y.ordre)
     .map(carteAttrait)
     .join('');
   return `
-    <section class="resume" aria-label="Résumé du passeport">
-      <div><span class="chiffre">${total}</span><span class="legende">${esc(monnaie())}</span></div>
-      <div><span class="chiffre">${etampes}/${state.attraits.length}</span><span class="legende">étampes</span></div>
+    <section class="page-identite" aria-label="Page d’identité">
+      <div class="champs">
+        <div class="champ large"><span>Titulaire</span><strong>${esc(state.joueur.nom || '—')}</strong></div>
+        <div class="champ"><span>N° de passeport</span><strong>${esc(state.joueur.numero)}</strong></div>
+        <div class="champ"><span>Première étampe</span><strong>${esc(premiere)}</strong></div>
+        <div class="champ"><span>Étampes</span><strong>${etampes} / ${state.attraits.length}</strong></div>
+        <div class="champ"><span>Solde</span><strong>${total} ${esc(monnaie())}</strong></div>
+      </div>
+      <pre class="mrz" aria-label="Zone de lecture automatique">${esc(zoneLecture())}</pre>
     </section>
-    <p class="intro">${esc(state.settings.sousTitre)}</p>
-    ${
+    <p class="prochaine">${
       prochaine
-        ? `<p class="prochaine">Prochaine récompense : <strong>${esc(prochaine.titre)}</strong> à ${prochaine.seuil} ${esc(monnaie())}
-           <span class="barre"><span style="width:${Math.round(prochaine.progres * 100)}%"></span></span></p>`
-        : '<p class="prochaine">Toutes les récompenses sont débloquées !</p>'
-    }
+        ? `Prochain avantage : <strong>${esc(prochaine.titre)}</strong> à ${prochaine.seuil} ${esc(monnaie())}
+           <span class="barre"><span style="width:${Math.round(prochaine.progres * 100)}%"></span></span>`
+        : 'Tous les avantages sont débloqués !'
+    }</p>
     <form data-form="nom-joueur" class="ligne nom">
-      <label class="sr" for="nom-joueur">Nom sur le passeport</label>
-      <input id="nom-joueur" name="nom" value="${esc(state.joueur.nom)}" placeholder="Votre prénom (facultatif)" maxlength="60">
+      <label class="sr" for="nom-joueur">Nom du titulaire</label>
+      <input id="nom-joueur" name="nom" value="${esc(state.joueur.nom)}" placeholder="Nom du titulaire (facultatif)" maxlength="60">
       <button>Enregistrer</button>
     </form>
-    <div class="grille">${cartes || '<p>Aucun attrait pour le moment.</p>'}</div>`;
+    <h3>Pages de visas</h3>
+    <div class="pages">${visas || '<p>Aucun attrait pour le moment.</p>'}</div>`;
+}
+
+// Zone de lecture automatique (style MRZ) : deux lignes de 44 caractères.
+function zoneLecture() {
+  const nettoyer = (t) => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '<');
+  const nom = nettoyer(state.joueur.nom || 'VISITEUR').replace(/<+/g, '<');
+  const ligne1 = `P<CAN${nom}`.padEnd(44, '<').slice(0, 44);
+  const ligne2 = `${state.joueur.numero}`.padEnd(44, '<').slice(0, 44);
+  return `${ligne1}\n${ligne2}`;
 }
 
 function carteAttrait(a) {
   const et = state.joueur.etampes[a.id];
-  const classes = ['carte', et ? 'fait' : '', !a.actif ? 'inactif' : '', dernier === a.id ? 'nouvelle' : ''].filter(Boolean).join(' ');
-  const pied = et
-    ? `<div class="etampe" aria-label="Étampé le ${esc(fmt(et.date))}"><span class="etampe-titre">Visité</span><span>${esc(fmt(et.date))}</span></div>`
-    : a.actif
-      ? `<p class="a-faire">Scannez le code QR sur place.</p>`
-      : `<p class="a-faire">Non disponible pour le moment.</p>`;
+  const classes = ['visa', et ? 'tamponne' : '', !a.actif ? 'inactif' : '', dernier === a.id ? 'nouvelle' : ''].filter(Boolean).join(' ');
+  const corps = et
+    ? `<div class="tampon" aria-label="Étampé le ${esc(fmt(et.date))}">
+         <span class="tampon-haut">Visité</span>
+         <span class="tampon-centre">${esc(a.nom.length > 40 ? a.nom.slice(0, 38) + '…' : a.nom)}</span>
+         <span class="tampon-date">${esc(dateCourte(et.date))}</span>
+         <span class="tampon-bas">MRC des Basques</span>
+       </div>`
+    : `<div class="case-vide">${a.actif ? 'Scannez le code QR sur place' : 'Non disponible pour le moment'}</div>`;
   return `
     <article class="${classes}">
-      <p class="categorie">${esc(a.categorie || 'Attrait')}</p>
-      <h2>${esc(a.nom)}</h2>
+      <header class="visa-entete"><span class="visa-num">${esc(String(a.ordre).padStart(2, '0'))}</span><h2>${esc(a.nom)}</h2></header>
       ${a.lieu ? `<p class="lieu">${esc(a.lieu)}</p>` : ''}
+      ${corps}
       ${a.description ? `<p class="desc">${esc(a.description)}</p>` : ''}
-      ${pied}
     </article>`;
 }
+
+const dateCourte = (iso) =>
+  new Date(iso).toLocaleDateString('fr-CA', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 
 function vueScanner() {
   const camera = 'BarcodeDetector' in window;
@@ -146,12 +169,12 @@ function vueRecompenses() {
   if (!liste.length) return '<p>Aucune récompense définie.</p>';
   return `
     <section class="recompenses">
-      <h2>Récompenses</h2>
+      <h2>Avantages</h2>
       <p class="intro">Vous avez <strong>${total} ${esc(monnaie())}</strong>.</p>
       ${liste
         .map(
           (r) => `
-        <article class="carte reco ${r.reclamee ? 'reclamee' : r.debloquee ? 'debloquee' : ''}">
+        <article class="coupon ${r.reclamee ? 'reclamee' : r.debloquee ? 'debloquee' : ''}">
           <h3>${esc(r.titre)}</h3>
           ${r.description ? `<p class="desc">${esc(r.description)}</p>` : ''}
           <p class="seuil">${r.seuil} ${esc(monnaie())}</p>

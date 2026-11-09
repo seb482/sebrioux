@@ -1,60 +1,88 @@
+/* Passeport virtuel – MRC des Basques : couverture, pages d'identité et pages de visas. */
 :root {
-  --bleu: #1d3557;
-  --papier: #f7f1e3;
-  --carte: #fffdf7;
-  --encre: #1b1b1f;
-  --gris: #5f5f68;
-  --bord: #e2d8c3;
-  --accent: #c8553d;
-  --or: #d4a017;
+  --couverture: #14213d;
+  --couverture-2: #1d3557;
+  --or: #c9a227;
+  --or-clair: #e8cf7a;
+  --papier: #f4ecd8;
+  --papier-2: #ebe0c4;
+  --encre: #2a2620;
+  --gris: #6e6457;
+  --filet: #b9a77f;
+  --tampon: #8e2432;
   --ok: #2d6a4f;
   --err: #9d0208;
-  --rayon: 14px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bleu: #8fb8e8;
-    --papier: #141820;
-    --carte: #1c2330;
-    --encre: #eceff4;
-    --gris: #a2aab8;
-    --bord: #2e3a4d;
-    --accent: #f08a6f;
-    --or: #f2c14e;
-    --ok: #7bd3a0;
-    --err: #ff8a8a;
-  }
+  --rayon: 6px;
 }
 
 * { box-sizing: border-box; }
-
 [hidden] { display: none !important; }
 
 body {
   margin: 0;
-  background: var(--papier);
   color: var(--encre);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 16px/1.5 Georgia, "Times New Roman", serif;
+  background-color: var(--papier);
+  background-image:
+    repeating-radial-gradient(circle at 50% 50%, rgba(139, 107, 42, 0.035) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #f7f0dc 0%, var(--papier) 100%);
+  background-attachment: fixed;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* ---------- Couverture (en-tête) ---------- */
 .entete {
-  background: var(--bleu);
-  color: #fff;
-  padding: 20px 16px 16px;
-  padding-top: calc(20px + env(safe-area-inset-top));
+  position: relative;
+  text-align: center;
+  color: var(--or-clair);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201, 162, 39, 0.18), transparent 60%),
+    linear-gradient(170deg, var(--couverture-2), var(--couverture) 70%);
+  padding: calc(18px + env(safe-area-inset-top)) 16px 18px;
+  border-bottom: 3px solid var(--or);
+  box-shadow: inset 0 -10px 0 #0d1830, 0 6px 14px rgba(20, 33, 61, 0.25);
 }
-.entete h1 { margin: 0; font-size: 1.6rem; line-height: 1.2; }
-.kicker { margin: 0 0 4px; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+.entete::before, .entete::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 1px;
+  background: var(--or);
+  opacity: 0.6;
+}
+.entete::before { top: 9px; }
+.entete::after { bottom: 14px; }
+.emblème {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 4px;
+  display: block;
+}
+.kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--or);
+}
+.entete h1 {
+  margin: 4px 0 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #000;
+}
 
+/* ---------- Onglets = onglets de cahier ---------- */
 .onglets, .sous-onglets {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
-  padding: 10px 16px;
-  background: var(--carte);
-  border-bottom: 1px solid var(--bord);
+  padding: 10px 12px;
+  background: var(--papier-2);
+  border-bottom: 1px solid var(--filet);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -63,89 +91,140 @@ body {
 
 button, .bouton {
   font: inherit;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  border: 1px solid var(--bleu);
-  background: var(--bleu);
-  color: #fff;
-  border-radius: 999px;
-  padding: 8px 16px;
+  border: 1px solid var(--couverture-2);
+  background: var(--couverture-2);
+  color: var(--or-clair);
+  border-radius: var(--rayon);
+  padding: 7px 14px;
   white-space: nowrap;
   display: inline-block;
 }
 button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--or); outline-offset: 2px; }
 .onglets button, .sous-onglets button {
   background: transparent;
-  color: var(--bleu);
+  color: var(--couverture-2);
+  border-color: transparent;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  border-radius: 3px;
 }
 .onglets button[aria-current="true"], .sous-onglets button[aria-pressed="true"] {
-  background: var(--bleu);
-  color: #fff;
+  background: var(--couverture);
+  color: var(--or-clair);
+  border-color: var(--or);
 }
-button.danger { background: var(--err); border-color: var(--err); }
-button.discret { background: transparent; color: var(--gris); border-color: var(--bord); }
+button.danger { background: var(--err); border-color: var(--err); color: #fff; }
+button.discret { background: transparent; color: var(--gris); border-color: var(--filet); }
 
-.contenu {
-  padding: 16px;
-  max-width: 760px;
-  margin: 0 auto;
+.contenu { padding: 16px; max-width: 760px; margin: 0 auto; }
+h2 { font-size: 1.25rem; margin: 6px 0 12px; font-weight: 700; color: var(--couverture); }
+h3 {
+  font-size: 0.85rem;
+  margin: 22px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--couverture-2);
+  border-bottom: 1px solid var(--filet);
+  padding-bottom: 4px;
 }
-h2 { font-size: 1.3rem; margin: 8px 0 12px; }
-h3 { font-size: 1.05rem; margin: 20px 0 8px; }
-.intro { color: var(--gris); margin: 0 0 12px; }
-.petit { font-size: 0.85rem; color: var(--gris); }
+.intro { color: var(--gris); margin: 0 0 12px; font-style: italic; }
+.petit { font-size: 0.82rem; color: var(--gris); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 .banniere {
-  padding: 12px 14px;
+  padding: 10px 14px;
   border-radius: var(--rayon);
-  border: 1px solid var(--bord);
-  background: var(--carte);
+  border: 1px solid var(--filet);
+  border-left: 5px solid var(--gris);
+  background: #fbf7ec;
   margin: 0 0 16px;
+  font-size: 0.95rem;
 }
-.banniere.succes { border-color: var(--ok); color: var(--ok); }
-.banniere.erreur { border-color: var(--err); color: var(--err); }
+.banniere.succes { border-left-color: var(--ok); color: var(--ok); }
+.banniere.erreur { border-left-color: var(--err); color: var(--err); }
+.banniere.info { border-left-color: var(--or); }
 
-.resume {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 8px;
+/* ---------- Page d'identité ---------- */
+.page-identite {
+  position: relative;
+  background: #fbf6e6;
+  border: 1px solid var(--filet);
+  border-radius: 4px;
+  padding: 16px 16px 14px;
+  box-shadow: 0 2px 0 var(--filet), 0 8px 18px rgba(60, 45, 20, 0.12);
+  overflow: hidden;
 }
-.resume > div {
-  flex: 1;
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: var(--rayon);
-  padding: 12px;
+.page-identite::before {
+  content: "PASSEPORT VIRTUEL · MRC DES BASQUES";
+  display: block;
   text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--couverture-2);
+  border-bottom: 2px solid var(--couverture-2);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
 }
-.chiffre { display: block; font-size: 2rem; font-weight: 700; color: var(--or); line-height: 1.1; }
-.legende { font-size: 0.85rem; color: var(--gris); }
+.champs { display: grid; gap: 12px 16px; grid-template-columns: 1fr 1fr; }
+.champ { display: flex; flex-direction: column; border-bottom: 1px dotted var(--filet); padding-bottom: 4px; min-width: 0; }
+.champ.large { grid-column: 1 / -1; }
+.champ span {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gris);
+}
+.champ strong {
+  font-size: 1.05rem;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  color: var(--encre);
+  overflow-wrap: anywhere;
+}
+.mrz {
+  margin: 16px 0 0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  color: #3a342b;
+  background: #f0e6cc;
+  padding: 8px 10px;
+  white-space: pre;
+  overflow-x: auto;
+  border-top: 2px solid var(--filet);
+}
 
-.prochaine { margin: 12px 0; }
+.prochaine { margin: 14px 0 6px; font-size: 0.95rem; }
 .barre {
   display: block;
-  height: 8px;
-  background: var(--bord);
-  border-radius: 999px;
+  height: 6px;
+  background: var(--papier-2);
+  border: 1px solid var(--filet);
+  border-radius: 2px;
   overflow: hidden;
   margin-top: 6px;
 }
-.barre > span { display: block; height: 100%; background: var(--or); border-radius: 999px; transition: width 0.4s; }
+.barre > span { display: block; height: 100%; background: var(--or); transition: width 0.4s; }
 
 .ligne { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
 .ligne input { flex: 1; min-width: 140px; }
-.nom input { max-width: 320px; }
+.nom input { max-width: 340px; }
 
 input, textarea, select {
   font: inherit;
   color: var(--encre);
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: 10px;
-  padding: 9px 12px;
+  background: #fffdf6;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  padding: 8px 11px;
   width: 100%;
 }
-label { display: block; font-size: 0.9rem; color: var(--gris); }
+label { display: block; font-size: 0.88rem; color: var(--gris); }
 label input, label textarea { margin-top: 4px; color: var(--encre); }
 label.case, label.ligne-etampe { display: flex; align-items: center; gap: 8px; color: var(--encre); font-size: 1rem; }
 label.case input, label.ligne-etampe input { width: auto; margin: 0; }
@@ -153,88 +232,172 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 .formulaire { display: grid; gap: 14px; max-width: 560px; }
 .formulaire .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.grille { display: grid; gap: 14px; grid-template-columns: 1fr; }
-@media (min-width: 620px) { .grille { grid-template-columns: 1fr 1fr; } }
+/* ---------- Pages de visas ---------- */
+.pages { display: grid; gap: 16px; }
+@media (min-width: 620px) { .pages { grid-template-columns: 1fr 1fr; } }
 
-.carte {
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: var(--rayon);
-  padding: 16px;
+.visa {
   position: relative;
+  background: #fbf6e6;
+  border: 1px solid var(--filet);
+  border-radius: 4px;
+  padding: 12px 14px 14px;
+  box-shadow: 0 2px 0 var(--filet), 0 6px 14px rgba(60, 45, 20, 0.10);
   overflow: hidden;
 }
-.carte h2, .carte h3 { margin-top: 2px; }
-.carte.inactif { opacity: 0.6; }
-.categorie { margin: 0 0 4px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
-.lieu { margin: 0; color: var(--gris); font-size: 0.9rem; }
-.desc { font-size: 0.95rem; margin: 8px 0 0; }
-.a-faire { margin: 12px 0 0; font-size: 0.9rem; color: var(--gris); font-style: italic; }
-.ok { color: var(--ok); font-weight: 600; }
-.erreur { color: var(--err); }
+/* filigrane guilloché discret */
+.visa::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(45deg, rgba(140, 110, 50, 0.05) 0 1px, transparent 1px 7px);
+}
+.visa > * { position: relative; }
+.visa.inactif { opacity: 0.55; }
+.visa-entete { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--filet); padding-bottom: 6px; }
+.visa-num {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.8rem;
+  color: var(--gris);
+  border: 1px solid var(--filet);
+  padding: 0 5px;
+}
+.visa h2 { margin: 0; font-size: 1.08rem; }
+.lieu { margin: 6px 0 0; color: var(--gris); font-size: 0.88rem; font-style: italic; }
+.desc { font-size: 0.92rem; margin: 10px 0 0; }
 
-.carte.fait { border-color: var(--or); }
-.carte.fait h2 { color: var(--bleu); }
+.case-vide {
+  margin: 12px auto 4px;
+  width: 100%;
+  min-height: 118px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  border: 2px dashed var(--filet);
+  border-radius: 4px;
+  color: var(--gris);
+  font-size: 0.88rem;
+  font-style: italic;
+}
 
-/* Étampe façon passeport */
-.etampe {
-  display: inline-flex;
+/* Tampon encré : cercle double, texte inscrit, léger grain d'encre */
+.tampon {
+  position: relative;
+  margin: 12px auto 4px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px double var(--tampon);
+  color: var(--tampon);
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 128px;
-  height: 128px;
-  margin-top: 12px;
-  border: 3px double var(--accent);
-  border-radius: 50%;
-  color: var(--accent);
-  transform: rotate(-12deg);
-  font-weight: 700;
   text-align: center;
-  font-size: 0.8rem;
-  line-height: 1.2;
-  padding: 8px;
-  opacity: 0.9;
+  transform: rotate(-9deg);
+  mix-blend-mode: multiply;
+  filter: url(#encre);
+  opacity: 0.92;
+  padding: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
-.etampe-titre { font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.carte.nouvelle .etampe { animation: frapper 0.6s cubic-bezier(.2,1.6,.4,1) both; }
+.tampon::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tampon);
+}
+.tampon-haut, .tampon-bas { font-size: 0.6rem; letter-spacing: 0.2em; }
+.tampon-centre { font-size: 1rem; line-height: 1.15; margin: 4px 0; max-width: 118px; }
+.tampon-date { font-family: "Courier New", Courier, monospace; font-size: 0.82rem; border-top: 1px solid var(--tampon); border-bottom: 1px solid var(--tampon); padding: 1px 6px; }
+.tampon-bas { margin-top: 4px; }
+
+.visa.nouvelle .tampon { animation: frapper 0.55s cubic-bezier(.2, 1.5, .4, 1) both; }
 @keyframes frapper {
-  from { transform: rotate(-12deg) scale(2.2); opacity: 0; }
-  to { transform: rotate(-12deg) scale(1); opacity: 0.9; }
+  from { transform: rotate(-9deg) scale(1.9); opacity: 0; }
+  to { transform: rotate(-9deg) scale(1); opacity: 0.92; }
 }
 
+.a-faire { margin: 8px 0 0; font-size: 0.88rem; color: var(--gris); font-style: italic; }
+.ok { color: var(--ok); font-weight: 700; }
+.erreur { color: var(--err); }
+
+/* ---------- Scanner (contrôle frontalier) ---------- */
 .scan .cadre {
   aspect-ratio: 4 / 3;
   background: #000;
-  border-radius: var(--rayon);
+  border-radius: 4px;
   overflow: hidden;
   margin: 12px 0;
-  border: 2px solid var(--or);
+  border: 3px double var(--or);
 }
 .scan video { width: 100%; height: 100%; object-fit: cover; }
 .statut { color: var(--gris); font-size: 0.95rem; }
 
-.recompenses .carte.debloquee { border-color: var(--or); }
-.recompenses .carte.reclamee { opacity: 0.8; }
-.seuil { font-weight: 700; color: var(--or); margin: 4px 0 0; }
-.reco button { margin-top: 12px; }
+/* ---------- Avantages (récompenses) : coupons détachables ---------- */
+.coupon {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  background: #fbf6e6;
+  border: 1px solid var(--filet);
+  border-left: 6px solid var(--couverture-2);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 0 var(--filet);
+}
+.coupon.debloquee { border-left-color: var(--or); }
+.coupon.reclamee { opacity: 0.7; }
+.coupon h3 { border: none; margin: 0; padding: 0; font-size: 1.02rem; letter-spacing: 0.04em; text-transform: none; color: var(--encre); }
+.coupon .desc { margin: 0; }
+.seuil { font-family: "Courier New", Courier, monospace; font-weight: 700; color: var(--couverture-2); margin: 4px 0 0; }
+.coupon button { margin-top: 8px; justify-self: start; }
+.coupon::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 10px;
+  bottom: 10px;
+  width: 0;
+  border-right: 2px dashed var(--filet);
+}
 
+/* ---------- Administration ---------- */
 .admin-acces { max-width: 420px; }
 .entete-section { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
 .liste-admin { display: grid; gap: 10px; margin-top: 12px; }
-.admin-item { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
-.admin-item .actions, .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-.admin-item .actions button, .actions button { padding: 6px 12px; font-size: 0.9rem; }
-code { background: var(--bord); padding: 1px 6px; border-radius: 6px; font-size: 0.9em; }
-
+.admin-item { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; background: #fbf6e6; border: 1px solid var(--filet); border-radius: 4px; padding: 12px 14px; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.actions button { padding: 5px 11px; font-size: 0.85rem; }
+code { background: var(--papier-2); padding: 1px 6px; border-radius: 3px; font-size: 0.9em; font-family: "Courier New", Courier, monospace; }
 .liste-cases { display: grid; gap: 8px; margin-top: 8px; }
 .ajustements { padding-left: 0; list-style: none; display: grid; gap: 8px; }
 .ajustements li { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
+/* ---------- Bandeau d'installation ---------- */
+.installation {
+  margin: 14px auto 0;
+  max-width: 760px;
+  padding: 12px 16px;
+  background: #fbf6e6;
+  border: 1px solid var(--filet);
+  border-left: 5px solid var(--or);
+  border-radius: 4px;
+}
+.installation p { margin: 0 0 8px; }
+.installation .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---------- Fenêtre de détail (QR) ---------- */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(20, 33, 61, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,16 +405,17 @@ code { background: var(--bord); padding: 1px 6px; border-radius: 6px; font-size:
   z-index: 50;
 }
 .modal-carte {
-  background: var(--carte);
+  background: var(--papier);
   color: var(--encre);
-  border-radius: var(--rayon);
+  border: 3px double var(--couverture-2);
+  border-radius: 4px;
   padding: 20px;
   max-width: 340px;
   width: 100%;
   text-align: center;
 }
-.modal-carte h2 { margin-top: 0; font-size: 1.15rem; }
-.qr { display: flex; justify-content: center; background: #fff; padding: 12px; border-radius: 10px; margin: 8px auto; width: fit-content; }
+.modal-carte h2 { margin-top: 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.qr { display: flex; justify-content: center; background: #fff; padding: 12px; border-radius: 4px; margin: 8px auto; width: fit-content; }
 .url { word-break: break-all; }
 .modal-carte .actions { justify-content: center; margin-top: 12px; }
 
@@ -261,16 +425,3 @@ code { background: var(--bord); padding: 1px 6px; border-radius: 6px; font-size:
   .modal-carte { box-shadow: none; border: none; }
   .modal-carte .actions { display: none; }
 }
-
-.installation {
-  margin: 12px 16px 0;
-  padding: 12px 14px;
-  background: var(--carte);
-  border: 1px solid var(--or);
-  border-radius: var(--rayon);
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.installation p { margin: 0 0 8px; }
-.installation .actions { display: flex; gap: 8px; flex-wrap: wrap; }

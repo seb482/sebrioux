@@ -61,8 +61,6 @@ body {
   height: auto;
   aspect-ratio: 1;
   margin: 0 auto 12px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--couverture), 0 0 0 4px var(--or), 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 .kicker {
   margin: 0;

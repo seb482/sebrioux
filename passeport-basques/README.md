@@ -19,6 +19,15 @@ python3 -m http.server 8000
 
 Sur GitHub Pages, le dossier se publie tel quel. La caméra exige HTTPS ou `localhost`.
 
+## Installation par les visiteurs
+
+- **Android, ordinateur (Chrome, Edge)** : un bouton *Installer* apparaît dans l'application.
+- **iPhone (Safari)** : touchez *Partager*, puis *Sur l'écran d'accueil*. Le bloc d'aide s'affiche automatiquement.
+- Une fois installée, l'application fonctionne hors ligne (service worker, version `passeport-basques-v2`).
+- Le bloc d'installation peut être masqué par « Plus tard ». Il ne revient pas tant que le visiteur ne vide pas le stockage du site.
+
+Icônes : `icon-192.png`, `icon-512.png` (également maskable) et `apple-touch-icon.png`, générées à partir de `icon.svg`.
+
 ## Fonctionnement
 
 ### Scanner un code QR

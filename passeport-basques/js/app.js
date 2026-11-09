@@ -690,6 +690,58 @@ function fermerModal() {
   document.getElementById('modal-corps').innerHTML = '';
 }
 
+// ---------- Installation sur l'écran d'accueil ----------
+
+const dejaInstallee = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const iosSafari = /iphone|ipad|ipod/i.test(navigator.userAgent) && !/crios|fxios|edgios/i.test(navigator.userAgent);
+let invitation = null; // événement beforeinstallprompt (Chrome, Edge, Android)
+let plusTard = false;
+try {
+  plusTard = localStorage.getItem(`${core.STORAGE_KEY}:plus-tard`) === '1';
+} catch {
+  /* ignoré */
+}
+
+function majInstallation() {
+  const bloc = document.getElementById('installation');
+  if (!bloc) return;
+  const montrer = !dejaInstallee && !plusTard && (invitation || iosSafari);
+  bloc.hidden = !montrer;
+  document.getElementById('btn-installer').hidden = !invitation;
+  document.getElementById('aide-ios').hidden = !(iosSafari && !invitation);
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  invitation = e;
+  majInstallation();
+});
+
+window.addEventListener('appinstalled', () => {
+  invitation = null;
+  majInstallation();
+});
+
+document.getElementById('btn-installer').addEventListener('click', async () => {
+  if (!invitation) return;
+  invitation.prompt();
+  await invitation.userChoice;
+  invitation = null;
+  majInstallation();
+});
+
+document.getElementById('btn-plus-tard').addEventListener('click', () => {
+  plusTard = true;
+  try {
+    localStorage.setItem(`${core.STORAGE_KEY}:plus-tard`, '1');
+  } catch {
+    /* ignoré */
+  }
+  majInstallation();
+});
+
+majInstallation();
+
 // ---------- Démarrage ----------
 
 const codeInitial = new URLSearchParams(location.search).get('e');

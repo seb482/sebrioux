@@ -7,8 +7,12 @@
   <meta name="description" content="Passeport virtuel de la MRC des Basques : scannez les codes QR des attraits, accumulez des pistoles et débloquez des récompenses.">
   <title>Passeport virtuel – MRC des Basques</title>
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Passeport">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,6 +27,15 @@
     <button data-action="vue" data-vue="recompenses">Récompenses</button>
     <button data-action="vue" data-vue="admin">Admin</button>
   </nav>
+
+  <section id="installation" class="installation" hidden aria-label="Installer l’application">
+    <p><strong>Gardez le passeport sur votre téléphone.</strong> Installez-le pour le retrouver sur votre écran d’accueil, même hors ligne.</p>
+    <div class="actions">
+      <button id="btn-installer" hidden>Installer</button>
+      <button id="btn-plus-tard" class="discret">Plus tard</button>
+    </div>
+    <p id="aide-ios" class="petit" hidden>Sur iPhone : touchez <strong>Partager</strong> (le carré avec la flèche), puis <strong>Sur l’écran d’accueil</strong>.</p>
+  </section>
 
   <main id="contenu" class="contenu" aria-live="polite"></main>
 

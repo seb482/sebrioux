@@ -130,7 +130,7 @@ function carteAttrait(a) {
          <span class="tampon-date">${esc(dateCourte(et.date))}</span>
          <span class="tampon-bas">MRC des Basques</span>
        </div>`
-    : `<div class="case-vide">${a.actif ? 'Scannez le code QR sur place' : 'Pas disponible pour l’instant'}</div>`;
+    : (a.actif ? `<button class="case-vide" data-action="vue" data-vue="scanner">Scanner le code QR sur place</button>` : `<div class="case-vide">Pas disponible pour l’instant</div>`);
   return `
     <article class="${classes}">
       <header class="visa-entete"><span class="visa-num">${esc(String(a.ordre).padStart(2, '0'))}</span><h2>${esc(a.nom)}</h2></header>

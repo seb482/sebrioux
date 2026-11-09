@@ -273,6 +273,7 @@ label.case input, label.ligne-etampe input { width: auto; margin: 0; }
 .desc { font-size: 0.92rem; margin: 10px 0 0; }
 
 .case-vide {
+  width: 100%; font: inherit; cursor: pointer; background: transparent;
   margin: 12px auto 4px;
   width: 100%;
   min-height: 118px;

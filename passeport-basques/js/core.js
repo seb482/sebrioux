@@ -47,7 +47,7 @@ export function defaultState() {
     version: SCHEMA_VERSION,
     settings: {
       titre: 'Passeport virtuel',
-      mrc: 'MRC des Basques',
+      mrc: 'MRC les Basques',
       sousTitre: 'Faites le tour des attraits de la MRC et ramassez des pistoles au passage.',
       monnaie: 'pistoles',
       pistolesParEtampe: 10,

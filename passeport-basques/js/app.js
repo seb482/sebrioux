@@ -128,7 +128,7 @@ function carteAttrait(a) {
          <span class="tampon-haut">Visité</span>
          <span class="tampon-centre">${esc(a.nom.length > 40 ? a.nom.slice(0, 38) + '…' : a.nom)}</span>
          <span class="tampon-date">${esc(dateCourte(et.date))}</span>
-         <span class="tampon-bas">MRC des Basques</span>
+         <span class="tampon-bas">MRC les Basques</span>
        </div>`
     : (a.actif ? `<button class="case-vide" data-action="vue" data-vue="scanner">Scanner le code QR sur place</button>` : `<div class="case-vide">Pas disponible pour l’instant</div>`);
   return `

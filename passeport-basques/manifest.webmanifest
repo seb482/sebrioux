@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Passeport virtuel – MRC des Basques",
+  "name": "Passeport virtuel – MRC les Basques",
   "short_name": "Passeport",
-  "description": "Scannez les codes QR des attraits de la MRC des Basques et accumulez des pistoles.",
+  "description": "Scannez les codes QR des attraits de la MRC les Basques et accumulez des pistoles.",
   "lang": "fr-CA",
   "start_url": "./",
   "scope": "./",

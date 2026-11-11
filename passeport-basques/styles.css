@@ -1,4 +1,4 @@
-/* Passeport virtuel – MRC des Basques : couverture, pages d'identité et pages de visas. */
+/* Passeport virtuel – MRC les Basques : couverture, pages d'identité et pages de visas. */
 :root {
   --couverture: #14213d;
   --couverture-2: #1d3557;
@@ -162,7 +162,7 @@ h3 {
   overflow: hidden;
 }
 .page-identite::before {
-  content: "MRC des Basques";
+  content: "MRC les Basques";
   display: block;
   text-align: center;
   font-size: 0.7rem;

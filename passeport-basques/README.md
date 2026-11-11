@@ -1,6 +1,6 @@
-# Passeport virtuel – MRC des Basques
+# Passeport virtuel – MRC les Basques
 
-Premier jet d'un passeport virtuel pour visiter les attraits de la MRC des Basques.
+Premier jet d'un passeport virtuel pour visiter les attraits de la MRC les Basques.
 
 - Chaque attrait a un **code QR** installé sur place. Le scan ajoute l'**étampe** dans le passeport.
 - Chaque étampe rapporte des **pistoles** (monnaie virtuelle, 10 par défaut).
